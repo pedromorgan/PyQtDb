@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-from PyQt4 import QtGui, QtCore, QtSql
-from PyQt4.QtCore import Qt
+from PyQt4.QtGui import QWidget, QVBoxLayout, QToolBar, QTreeWidget, QTreeWidgetItem
+
+from PyQt4.QtCore import Qt, SIGNAL
 
 from . import DBServerDialog
 from .ico import Ico
@@ -13,11 +14,13 @@ class C:
 	server = 0
 	user = 1
 
-class DBServersWidget(QtGui.QWidget):
+
+
+class DBServersWidget(QWidget):
 
 
 	def __init__(self, parent=None):
-		QtGui.QWidget.__init__(self, parent)
+		QWidget.__init__(self, parent)
 
 		self.debug = False
 		
@@ -27,14 +30,14 @@ class DBServersWidget(QtGui.QWidget):
 		#s#elf.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
 
 		
-		self.mainLayout = QtGui.QVBoxLayout()
+		self.mainLayout = QVBoxLayout()
 		self.mainLayout.setContentsMargins(0, 0, 0, 0)
 		self.mainLayout.setSpacing(0)
 		self.setLayout(self.mainLayout)
 
 		#=============================================
 		## Top Toolbar
-		topBar = QtGui.QToolBar()
+		topBar = QToolBar()
 		topBar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 		self.mainLayout.addWidget(topBar)
 		
@@ -45,12 +48,12 @@ class DBServersWidget(QtGui.QWidget):
 		
 		#=============================================
 		## Tree
-		self.tree = QtGui.QTreeWidget()
+		self.tree = QTreeWidget()
 		self.tree.setHeaderLabels(["Server", "User"])
 		self.mainLayout.addWidget(self.tree)
 		
-		self.connect( self.tree, QtCore.SIGNAL( 'itemSelectionChanged()' ), self.on_tree_selection_changed )
-		self.connect( self.tree, QtCore.SIGNAL( 'itemDoubleClicked (QTreeWidgetItem *,int)' ), self.on_tree_double_clicked )
+		self.connect( self.tree, SIGNAL( 'itemSelectionChanged()' ), self.on_tree_selection_changed )
+		self.connect( self.tree, SIGNAL( 'itemDoubleClicked (QTreeWidgetItem *,int)' ), self.on_tree_double_clicked )
 	
 	
 		self.on_tree_selection_changed()
@@ -94,7 +97,7 @@ class DBServersWidget(QtGui.QWidget):
 		servers = G.settings.get_servers_list()
 		for srv in servers:
 			
-			item = QtGui.QTreeWidgetItem()
+			item = QTreeWidgetItem()
 			item.setText(C.server, srv['server'])
 			item.setText(C.user, srv['user'])
 			self.tree.addTopLevelItem(item)
