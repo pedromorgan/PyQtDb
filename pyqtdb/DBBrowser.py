@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 
-from PyQt4 import QtGui, QtCore, QtSql
+from PyQt4.QtGui import QMainWindow
 from PyQt4.QtCore import Qt
 
 
 
-class DBBrowser(QtGui.QMainWindow):
+class DBBrowser(QMainWindow):
 
 
 	def __init__(self, parent=None):
-		QtGui.QMainWindow.__init__(self, parent)
+		QMainWindow.__init__(self, parent)
 
 		self.debug = False
 		
