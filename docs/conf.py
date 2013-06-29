@@ -29,13 +29,14 @@ from pyqtdb import __VERSION__
 
 class MockX(object):
     def __init__(self, *args, **kwargs):
-        pass
+        print "MockX.init()"
 
     def __call__(self, *args, **kwargs):
         return Mock()
 
     @classmethod
     def __getattr__(cls, name):
+        print "get_arrt", cls, name
         if name in ('__file__', '__path__'):
             return '/dev/null'
         elif name[0] == name[0].upper():
