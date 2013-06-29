@@ -65,7 +65,7 @@ MOCK_MODULES = ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore',
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
 """
-Mock.mock_modules('PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql')
+Mock.mock_modules('PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql', 'QtCore.QSettings', 'QtGui.QMainWindow')
 
     
 # -- General configuration -----------------------------------------------------
