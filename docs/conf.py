@@ -49,7 +49,7 @@ class MockX(object):
 
 
 
-MOCK_MODULES = ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql', 'QtCore.QSettings', 'QtGui.QMainWindow']
+MOCK_MODULES = ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql', 'QtCore.QSettings', 'QtGui.QMainWindow',"QSettings", "QMainWindow"]
 print "MOCK_MODULES", MOCK_MODULES
 
 for mod_name in MOCK_MODULES:
