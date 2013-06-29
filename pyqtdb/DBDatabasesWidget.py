@@ -14,15 +14,15 @@ from img import Ico
 import app_globals as G
 #
 class C:
-    """Columns enum"""
+    """Column numbers"""
     server = 0
     user = 1
     widget = 2
 
 
 
-class DBServersWidget(QWidget):
-    """Displays a list of servers"""
+class DBDatabasesWidget(QWidget):
+    """Displays a list of Databases"""
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -31,7 +31,7 @@ class DBServersWidget(QWidget):
         
         self.db = None
         
-        self.setWindowTitle("Servers")
+        self.setWindowTitle("Databases")
         #s#elf.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
 
         

@@ -2,8 +2,9 @@
 
 
 from PyQt4.QtGui import QWidget, QVBoxLayout, QToolBar, QTreeWidget, QTreeWidgetItem, \
-                        QToolButton, QButtonGroup
+                        QToolButton, QButtonGroup, QHeaderView
 
+from PyQt4.QtSql import QSqlDatabase, QSqlQuery
 from PyQt4.QtCore import Qt, SIGNAL
 
 from . import DBServerDialog
@@ -14,10 +15,9 @@ from img import Ico
 import app_globals as G
 #
 class C:
-    """Columns enum"""
-    server = 0
-    user = 1
-    widget = 2
+    node = 0
+    butt = 1
+    #widget = 2
 
 
 
@@ -29,7 +29,7 @@ class DBServersWidget(QWidget):
 
         self.debug = False
         
-        self.db = None
+        self.connections = {}
         
         self.setWindowTitle("Servers")
         #s#elf.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
@@ -55,10 +55,14 @@ class DBServersWidget(QWidget):
         ## Tree
         self.tree = QTreeWidget()
         self.mainLayout.addWidget(self.tree)
-        self.tree.setHeaderLabels(["Server", "User", ""])
         self.tree.setUniformRowHeights(True)
-        self.tree.setRootIsDecorated(False)
-        self.tree.setColumnWidth(C.widget, 20)
+        self.tree.setRootIsDecorated(True)
+        
+        
+        self.tree.setHeaderLabels(["Server", "Butt"]) # set header, but hide anyway
+        self.tree.header().hide()
+        self.tree.header().setResizeMode(C.node, QHeaderView.Stretch)
+        self.tree.setColumnWidth(C.butt, 20)
         
         
         self.connect( self.tree, SIGNAL( 'itemSelectionChanged()' ), self.on_tree_selection_changed )
@@ -101,12 +105,9 @@ class DBServersWidget(QWidget):
         d = DBServerDialog.DBServerDialog(self, server)
         if d.exec_():
             self.load_servers()
-       
-       
-    def on_open_server(self, butt):
-        self.emit(SIGNAL("open_server"), butt.property("server").toString())
-              
-             
+    
+
+            
     
     def load_servers(self):
         """Load servers from :py:meth:`pyqtdb.XSettings.XSettings.get_servers` """
@@ -119,14 +120,14 @@ class DBServersWidget(QWidget):
         for srv in G.settings.get_servers_list():
             
             item = QTreeWidgetItem()
-            item.setText(C.server, srv['server'])
-            item.setText(C.user, srv['user'])
+            item.setText(C.node, srv['server'])
+            #item.setText(C.user, srv['user'])
             self.tree.addTopLevelItem(item)
             
             butt = QToolButton()
             butt.setIcon(Ico.icon(Ico.Connect))
             butt.setProperty("server", srv['server'])
-            self.tree.setItemWidget(item, C.widget, butt)
+            self.tree.setItemWidget(item, C.butt, butt)
             self.buttGroup.addButton(butt)
         
         
@@ -138,3 +139,45 @@ class DBServersWidget(QWidget):
         G.settings.delete_server(srv)
         self.load_servers()
         
+        
+    def on_open_server(self, butt):
+        
+        # self.emit(SIGNAL("open_server"), butt.property("server").toString())
+        srv_ki = str(butt.property("server").toString())
+        server = G.settings.get_server(srv_ki)
+        db = QSqlDatabase.addDatabase("QMYSQL", srv_ki)
+        db.setHostName(server['server'])
+        db.setUserName(server['user'])
+        db.setPassword(server['passwd'])
+        
+        ok = db.open()
+        if ok:
+            #self.connections[srv_ki] = 
+            self.load_databases(srv_ki)
+            print "open", ok
+            
+            
+    def load_databases(self, srv_ki):
+        """Load databases into tree node for server;  executes 'show databases;' or aslike """
+        
+        sql = "show databases;"
+        query = QSqlQuery(QSqlDatabase.database(srv_ki))
+        ok = query.exec_(sql)
+        print ok, sql, query.result()
+        
+        # Get the parent node, ie the server node
+        pItem = self.tree.findItems(srv_ki, Qt.MatchExactly, C.node)[0]
+        
+        ## Assumed value(0) is the table.. we need the defs (ie mysql case)
+        while query.next():
+            table_name =  query.value(0).toString()
+            nuItem = QTreeWidgetItem(pItem)
+            nuItem.setText(C.node, table_name)
+            #print table_name
+            
+            
+        self.tree.setItemExpanded(pItem, True)
+        
+        
+        
+            

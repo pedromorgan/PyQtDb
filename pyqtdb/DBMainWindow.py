@@ -38,11 +38,12 @@ class DBMainWindow(QMainWindow):
         self.setMinimumWidth(800)
         self.setMinimumHeight(800)
         
+        """
         topBar = QToolBar()
         self.addToolBar(Qt.TopToolBarArea, topBar)
         
         topBar.addAction("New Server")
-        
+        """
         
         ## Servers Widget
         self.dockServers = QDockWidget("Servers")
