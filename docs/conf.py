@@ -22,6 +22,45 @@ if not pyqtdb_path in sys.path:
 
 from pyqtdb import __VERSION__
 
+
+
+class Mock(object):
+    """
+    Mock modules.
+
+    Taken from
+    http://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
+    with some slight changes.
+    """
+
+    @classmethod
+    def mock_modules(cls, *modules):
+        for module in modules:
+            sys.modules[module] = cls()
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __call__(self, *args, **kwargs):
+        return self.__class__()
+
+    def __getattr__(self, attribute):
+        if attribute in ('__file__', '__path__'):
+            return os.devnull
+        else:
+            # return the *class* object here.  Mocked attributes may be used as
+            # base class in pyudev code, thus the returned mock object must
+            # behave as class, or else Sphinx autodoc will fail to recognize
+            # the mocked base class as such, and "autoclass" will become
+            # meaningless
+            return self.__class__
+
+
+# mock out native modules used throughout pyudev to enable Sphinx autodoc even
+# if these modules are unavailable, as on readthedocs.org
+Mock.mock_modules('PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql')
+
+
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
