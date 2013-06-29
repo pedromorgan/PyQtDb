@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-from PyQt4 import QtGui, QtCore, QtSql
+from PyQt4.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QGridLayout, \
+						QLabel, QComboBox, QLineEdit, QPushButton
 from PyQt4.QtCore import Qt, SIGNAL
 
 from ico import Ico
@@ -9,11 +10,11 @@ import app_globals as G
 
 
 
-class DBServerDialog(QtGui.QDialog):
+class DBServerDialog(QDialog):
 
 
 	def __init__(self, parent=None, server=None):
-		QtGui.QDialog.__init__(self, parent)
+		QDialog.__init__(self, parent)
 
 		self.debug = False
 		
@@ -25,18 +26,18 @@ class DBServerDialog(QtGui.QDialog):
 		
 
 		m = 20
-		self.mainLayout = QtGui.QVBoxLayout()
+		self.mainLayout = QVBoxLayout()
 		self.mainLayout.setContentsMargins(m, m, m, m)
 		#self.mainLayout.setSpacing(0)
 		self.setLayout(self.mainLayout)
 		
-		self.grid = QtGui.QGridLayout()
+		self.grid = QGridLayout()
 		self.mainLayout.addLayout(self.grid)
 		
 		#= Server
 		row = 0
-		self.grid.addWidget(QtGui.QLabel("Server Host:"), row, 0, Qt.AlignRight)
-		self.comboServer = QtGui.QComboBox()
+		self.grid.addWidget(QLabel("Server Host:"), row, 0, Qt.AlignRight)
+		self.comboServer = QComboBox()
 		self.grid.addWidget(self.comboServer, row, 1, 1, 3)
 		self.comboServer.setEditable(True)
 		self.comboServer.addItem("localhost")
@@ -44,44 +45,44 @@ class DBServerDialog(QtGui.QDialog):
 		
 		#= Port
 		row += 1
-		self.grid.addWidget(QtGui.QLabel("Server Port:"), row, 0, Qt.AlignRight)
-		self.txtPort = QtGui.QLineEdit()
+		self.grid.addWidget(QLabel("Server Port:"), row, 0, Qt.AlignRight)
+		self.txtPort = QLineEdit()
 		self.txtPort.setText("3306")
 		self.grid.addWidget(self.txtPort, row, 1, 1, 1)
 		# @todo make this only iintegers ?
 		
 		row += 1
-		self.grid.addWidget(QtGui.QLabel("User Login:"), row, 0, Qt.AlignRight)
-		self.txtUser = QtGui.QLineEdit()
+		self.grid.addWidget(QLabel("User Login:"), row, 0, Qt.AlignRight)
+		self.txtUser = QLineEdit()
 		self.grid.addWidget(self.txtUser, row, 1, 1, 2)
 		
 		row += 1
-		self.grid.addWidget(QtGui.QLabel("Password:"), row, 0, Qt.AlignRight)
-		self.txtPasswd = QtGui.QLineEdit()
+		self.grid.addWidget(QLabel("Password:"), row, 0, Qt.AlignRight)
+		self.txtPasswd = QLineEdit()
 		self.grid.addWidget(self.txtPasswd, row, 1, 1, 2)
 		
 		
 		row += 1
-		self.lblTest = QtGui.QLabel("Test")
+		self.lblTest = QLabel("Test")
 		self.grid.addWidget(self.lblTest, row, 0, 1, 2, Qt.AlignRight)
-		self.buttTest = QtGui.QPushButton()
+		self.buttTest = QPushButton()
 		self.buttTest.setText("Test")
 		self.buttTest.setIcon(Ico.icon(Ico.ServerConnect))
 		self.grid.addWidget(self.buttTest, row, 2, 1, 1)
 		self.connect(self.buttTest, SIGNAL("clicked()"), self.on_test)
 		
 		
-		buttonBox = QtGui.QHBoxLayout()
+		buttonBox = QHBoxLayout()
 		buttonBox.addStretch(10)
 		self.mainLayout.addLayout(buttonBox)
 		
-		buttCancel = QtGui.QPushButton()
+		buttCancel = QPushButton()
 		buttCancel.setText("Cancel")
 		buttCancel.setIcon(Ico.icon(Ico.Cancel))
 		buttonBox.addWidget(buttCancel)
 		self.connect(buttCancel, SIGNAL("clicked()"), self.reject)
 		
-		self.buttSave = QtGui.QPushButton()
+		self.buttSave = QPushButton()
 		self.buttSave.setText("Save")
 		self.buttSave.setIcon(Ico.icon(Ico.Save))
 		buttonBox.addWidget(self.buttSave)

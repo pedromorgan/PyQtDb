@@ -15,8 +15,8 @@ class XSettings(QSettings):
 	SERVERS = NS + "_ssssserverss"
 	
 	
-	def __init__( self, parent=None ):
-		QSettings.__init__( self, parent )
+	def __init__( self ):
+		QSettings.__init__( self )
 		
 		## Sanity Checks
 		if not self.contains(self.SERVERS):
