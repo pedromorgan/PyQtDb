@@ -2,21 +2,21 @@
 
 import json
 
-from PyQt4 import QtGui, QtCore, QtSql
+from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import Qt
 
 
 
 
 
-class XSettings(QtCore.QSettings):
+class XSettings(QSettings):
 	
 	NS = "PYQTDB"
 	SERVERS = NS + "_ssssserverss"
 	
 	
 	def __init__( self, parent=None ):
-		QtCore.QSettings.__init__( self, parent )
+		QSettings.__init__( self, parent )
 		
 		## Sanity Checks
 		if not self.contains(self.SERVERS):
