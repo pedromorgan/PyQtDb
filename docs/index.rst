@@ -7,14 +7,13 @@ This is a quick attempt and work in progress on creating a Db Browser.
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     
     about
-    core
-    server
-    database
-    
+    api
 
+    
+.. todolist::
 
 Indices and tables
 ==================
