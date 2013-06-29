@@ -7,7 +7,7 @@
 import sys
 from PyQt4 import QtGui, QtCore
 
-import pyqtdb.MainWindow
+import pyqtdb.DBMainWindow
 
  
 if __name__ == '__main__':
@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	app = QtGui.QApplication( sys.argv )
 
 	
-	splashScreen = pyqtdb.MainWindow.show_splash()
+	splashScreen = pyqtdb.DBMainWindow.show_splash()
 
 	app.processEvents()
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 	QtGui.QApplication.setApplicationVersion( "0.1" )
 		
 
-	window = pyqtdb.MainWindow.MainWindow()
+	window = pyqtdb.DBMainWindow.DBMainWindow()
 
 	splashScreen.finish( window )
 	window.show()

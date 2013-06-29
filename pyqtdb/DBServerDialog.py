@@ -5,21 +5,16 @@ from PyQt4.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QGridLayout, \
                         QLabel, QComboBox, QLineEdit, QPushButton
 from PyQt4.QtCore import Qt, SIGNAL
 
-from ico import Ico
+from img import Ico
 import app_globals as G
 
 
 
 class DBServerDialog(QDialog):
-
+    """Edit a Server entry"""
 
     def __init__(self, parent=None, server=None):
         QDialog.__init__(self, parent)
-
-        self.debug = False
-        
-
-        
         
         self.setWindowTitle("Server")
         self.setWindowIcon(Ico.icon(Ico.ServerEdit if server else Ico.ServerAdd))
@@ -104,7 +99,9 @@ class DBServerDialog(QDialog):
     def on_save(self):
         """Save server settings 
         
-        Creates a :py:func:`dict` and passes to  :py:meth:`~pyqtdb.XSettings.XSettings.save_server` instance :py:`app_globals.settings`
+        Creates a :py:func:`dict` and 
+        passes to  :py:meth:`~pyqtdb.XSettings.XSettings.save_server` 
+        instance :py:`~pyqtdb.app_globals.settings`
         """	
         data_dic = dict(server= str(self.comboServer.currentText()), 
                                 port=str(self.txtPort.text()),

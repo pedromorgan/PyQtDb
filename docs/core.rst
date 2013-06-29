@@ -20,11 +20,28 @@ The app_globals file contains pointers in application scope.
     :members:
     :undoc-members:
     :show-inheritance:
-    
 
+    
 XSettings
 =====================
 .. automodule:: pyqtdb.XSettings
     :members:
     :undoc-members:
     :show-inheritance:
+
+    
+DBMainWindow
+=====================
+.. automodule:: pyqtdb.DBMainWindow
+    :members:
+    :undoc-members:
+    :show-inheritance: 
+
+Images Helper
+===================== 
+.. automodule:: pyqtdb.img
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    
+    

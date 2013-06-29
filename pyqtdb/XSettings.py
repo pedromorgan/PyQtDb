@@ -26,7 +26,7 @@ class XSettings(QSettings):
     """Namespace prepended to all keys"""
     
     
-    SERVERS = NS + "_servers"
+    SERVERS = NS + "_serversss"
     """Key that hold the servers data"""
     
     def __init__( self ):
@@ -39,6 +39,7 @@ class XSettings(QSettings):
     def initialize(self):
         """Initialise and check settings. Executed once on startup"""
         if not self.contains(self.SERVERS):
+            print "ADDDDDDDDDDDDDDDDDDDDDDDDDDDddd"
             self.setValue(self.SERVERS, QVariant(json.dumps({"servers":{}})))
             self.sync()
             
@@ -78,4 +79,11 @@ class XSettings(QSettings):
         self.sync()
     
         
-        
+    def save_window( self, window ):
+        """Convenience functin to save window"""
+        self.setValue( "window/%s/geometry" % window.W_NAME, QVariant( window.saveGeometry() ) )
+
+    def restore_window( self, window ):
+        """Convenience function to restore window"""
+        geo = self.value( "window/%s/geometry" % window.W_NAME )
+        window.restoreGeometry( geo.toByteArray() )
