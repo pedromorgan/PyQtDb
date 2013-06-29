@@ -18,7 +18,7 @@ class XSettings(QSettings):
 	def __init__( self ):
 		QSettings.__init__( self )
 		
-		self.sanity_checks()
+		#self.sanity_checks()
 		
 		
 	def sanity_checks(self):
