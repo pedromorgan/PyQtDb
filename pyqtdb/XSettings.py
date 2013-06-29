@@ -57,15 +57,24 @@ class XSettings(QSettings):
         servers = self.get_servers_dic()
         return [servers[ki] for ki in servers.keys()]
     
-    def get_server(self, server):
+    def get_server(self, srv):
         """
         :param server: The string with server host
         :return: A  :py:func:`dict` with the server details or None if not found
         """
         servers = self.get_servers_dic()
-        if not server in servers:
-            return None
-        return servers[server]
+        print "get+_server", servers, servers[srv]
+        if srv in servers:
+            return servers[srv]
+        return  None
+    
+    def delete_server(self, server):
+        qt_str = self.value(self.SERVERS).toString()
+        data =  json.loads( str(qt_str) )
+        del data['servers'][ server ]
+        s = json.dumps(data)
+        self.setValue(self.SERVERS, QVariant(s) )    
+        self.sync()
         
     def save_server(self, dic):
         """

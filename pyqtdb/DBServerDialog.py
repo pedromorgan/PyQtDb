@@ -28,20 +28,27 @@ class DBServerDialog(QDialog):
         
         self.grid = QGridLayout()
         self.mainLayout.addLayout(self.grid)
-        
-        #= Server
+      
+        #= Engine
         row = 0
+        self.grid.addWidget(QLabel("Engine:"), row, 0, Qt.AlignRight)
+        self.comboEngine = QComboBox()
+        """Datebase engine selector"""
+        self.grid.addWidget(self.comboEngine, row, 1, 1, 3)
+        self.comboEngine.addItem("QMYSQL")
+          
+        #= Server
+        row  += 1
         self.grid.addWidget(QLabel("Server Host:"), row, 0, Qt.AlignRight)
-        self.comboServer = QComboBox()
-        self.grid.addWidget(self.comboServer, row, 1, 1, 3)
-        self.comboServer.setEditable(True)
-        self.comboServer.addItem("localhost")
-        self.comboServer.addItem("example.com")
+        self.txtServer = QLineEdit()
+        """Server host"""
+        self.grid.addWidget(self.txtServer, row, 1, 1, 3)
         
         #= Port
         row += 1
         self.grid.addWidget(QLabel("Server Port:"), row, 0, Qt.AlignRight)
         self.txtPort = QLineEdit()
+        """Port No"""
         self.txtPort.setText("3306")
         self.grid.addWidget(self.txtPort, row, 1, 1, 1)
         # @todo make this only iintegers ?
@@ -49,11 +56,13 @@ class DBServerDialog(QDialog):
         row += 1
         self.grid.addWidget(QLabel("User Login:"), row, 0, Qt.AlignRight)
         self.txtUser = QLineEdit()
+        """Username"""
         self.grid.addWidget(self.txtUser, row, 1, 1, 2)
         
         row += 1
         self.grid.addWidget(QLabel("Password:"), row, 0, Qt.AlignRight)
         self.txtPasswd = QLineEdit()
+        """Password"""
         self.grid.addWidget(self.txtPasswd, row, 1, 1, 2)
         
         
@@ -86,7 +95,7 @@ class DBServerDialog(QDialog):
         if server:
             data = G.settings.get_server(server)
             if data:
-                self.comboServer.setEditText(data['server'])
+                self.txtServer.setText(data['server'])
                 self.txtPort.setText(data['port'])
                 self.txtUser.setText(data['user'])
                 self.txtPasswd.setText(data['passwd'])
@@ -103,10 +112,10 @@ class DBServerDialog(QDialog):
         passes to  :py:meth:`~pyqtdb.XSettings.XSettings.save_server` 
         instance :py:`~pyqtdb.app_globals.settings`
         """	
-        data_dic = dict(server= str(self.comboServer.currentText()), 
-                                port=str(self.txtPort.text()),
-                                user=str(self.txtUser.text()), 
-                                passwd=str(self.txtPasswd.text()))
+        data_dic = dict(server = str(self.txtServer.text()), 
+                        port=str(self.txtPort.text()),
+                        user=str(self.txtUser.text()), 
+                        passwd=str(self.txtPasswd.text()))
         G.settings.save_server(	data_dic )
         
         self.accept()

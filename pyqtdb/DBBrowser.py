@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-from PyQt4.QtGui import QMainWindow, QToolBar, QTreeWidget, QTreeWidgetItem, QAbstractItemView, QTreeView, QWidget, QHBoxLayout 
+from PyQt4.QtGui import QMainWindow, QToolBar, QTreeWidget, QTreeWidgetItem, QAbstractItemView, QTreeView, QWidget, QHBoxLayout
+from PyQt4.QtSql import QSqlDatabase
+ 
 from PyQt4.QtCore import Qt, SIGNAL
 
 
@@ -49,7 +51,7 @@ class DBBrowser(QMainWindow):
         self.mainLayout.addWidget(self.treeColumns, 4)
         self.treeColumns.setHeaderLabels(["Column", "Type", "Nullable"])
         
-        
+        self.db_connect()
         
         #self.fetch()
         
@@ -59,19 +61,16 @@ class DBBrowser(QMainWindow):
             return
         self.fetch( table = str(item.text(0)) )
         
-    def fetch(self, table=None):
+    def db_connect(self):
+        #print "db_connect", self.server
+        self.db = QSqlDatabase.addDatabase("QMYSQL")
+        self.db.setHostName(self.server['server'])
+        self.db.setUserName(self.server['user'])
+        self.db.setPassword(self.server['passwd'])
         
-        s_vars = {}
-        
-        if table:
-            url = "/dev0/db/table/%s" % table
-            self.treeColumns.clear()
-        else:
-            url = "/dev0/db/tables"
-        
-        server = dServerCall( self )
-        self.connect( server, QtCore.SIGNAL( 'dataReady' ), self.load_data )
-        server.action( url, s_vars, None, True )
+        ok = self.db.open()
+        print "open", ok
+        #self.db.setHostName(self.server['server'])
         
         
     def load_data(self, data):
@@ -81,14 +80,14 @@ class DBBrowser(QMainWindow):
             
             self.treeTables.clear()
             for t in data['tables']:
-                item = TreeWidgetItem()
+                item = QTreeWidgetItem()
                 item.setText(0, t['table'])
                 self.treeTables.addTopLevelItem(item)
 
         else:
             self.treeColumns.clear()
             for t in data['columns']:
-                item = TreeWidgetItem()
+                item = QTreeWidgetItem()
                 item.setText(0, t['column'])
                 item.setText(1, t['type'])
                 item.setText(2, "Yes" if t['nullable'] else "-")

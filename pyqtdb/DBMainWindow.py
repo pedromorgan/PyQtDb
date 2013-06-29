@@ -18,7 +18,10 @@ def show_splash():
     return splashScreen
 
 class DBMainWindow(QMainWindow):
-    """Main Window and Portal"""
+    """Main Window and Portal
+    
+    .. todo:: Remember the dock position
+    """
     
     W_NAME =  "DBMainWindow"
 
@@ -69,8 +72,11 @@ class DBMainWindow(QMainWindow):
         
     def on_open_server(self, srv):
         """Opens server by adding a :py:class:`~pyqtdb.DBBrowser.DBBrowser` in the the tabWidget"""
-        widget = DBBrowser.DBBrowser(self, srv)
-        self.tabWidget.addTab(widget, Ico.icon(Ico.Server), srv)
+        server = G.settings.get_server( str(srv) )
+        print "oopen", srv, server
+        widget = DBBrowser.DBBrowser(self, server)
+        self.tabWidget.addTab(widget, Ico.icon(Ico.Server), server['server'])
+        self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(widget))
     
     def closeEvent( self, event ):
         """Save window settings on close with :py:class:`~pyqtdb.XSettings.XSettings.save_window` """ 
