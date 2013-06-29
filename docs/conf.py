@@ -29,14 +29,14 @@ from pyqtdb import __VERSION__
 
 class MockX(object):
     def __init__(self, *args, **kwargs):
-        print "MockX.init()"
+        pass #print "MockX.init()"
 
     def __call__(self, *args, **kwargs):
         return Mock()
 
     @classmethod
     def __getattr__(cls, name):
-        print "get_arrt", cls, name
+        #print "get_arrt", cls, name
         if name in ('__file__', '__path__'):
             return '/dev/null'
         elif name[0] == name[0].upper():
@@ -50,7 +50,7 @@ class MockX(object):
 
 
 MOCK_MODULES = ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql', 'QtCore.QSettings', 'QtGui.QMainWindow',"QSettings", "QMainWindow"]
-print "MOCK_MODULES", MOCK_MODULES
+#print "MOCK_MODULES", MOCK_MODULES
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = MockX()
