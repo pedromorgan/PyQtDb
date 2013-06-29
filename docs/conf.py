@@ -56,11 +56,11 @@ class Mock(object):
             return self.__class__
 
 
-# mock out native modules used throughout pyudev to enable Sphinx autodoc even
-# if these modules are unavailable, as on readthedocs.org
-Mock.mock_modules('PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql')
 
-
+MOCK_MODULES = ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql']
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = Mock()
+    
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
