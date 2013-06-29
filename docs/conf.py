@@ -12,7 +12,9 @@
 # serve to show the default.
 
 import sys, os
-sys.path = [ ] + sys.path
+
+here_dir = os.path.dirname(os.path.abspath(__file__))
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -20,33 +22,51 @@ pyqtdb_path = os.path.realpath("../")
 if not pyqtdb_path in sys.path:
 	sys.path.insert(0, pyqtdb_path)
 
+
 from pyqtdb import __VERSION__
 
 
 
 class Mock(object):
+    """
+    Mock modules.
+
+    Taken from
+    http://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
+    with some slight changes.
+    """
+
+    @classmethod
+    def mock_modules(cls, *modules):
+        for module in modules:
+            sys.modules[module] = cls()
+
     def __init__(self, *args, **kwargs):
         pass
 
     def __call__(self, *args, **kwargs):
-        return Mock()
+        return self.__class__()
 
-    @classmethod
-    def __getattr__(cls, name):
-        if name in ('__file__', '__path__'):
-            return '/dev/null'
-        elif name[0] == name[0].upper():
-            mockType = type(name, (), {})
-            mockType.__module__ = __name__
-            return mockType
+    def __getattr__(self, attribute):
+        if attribute in ('__file__', '__path__'):
+            return os.devnull
         else:
-            return Mock()
+            # return the *class* object here.  Mocked attributes may be used as
+            # base class in pyudev code, thus the returned mock object must
+            # behave as class, or else Sphinx autodoc will fail to recognize
+            # the mocked base class as such, and "autoclass" will become
+            # meaningless
+            return self.__class__
 
 
 
+"""
 MOCK_MODULES = ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql', 'QtCore', 'QtGui', 'QtSql', 'QtCore.QSettings', 'QtGui.QMainWindow']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
+"""
+Mock.mock_modules('PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql')
+
     
 # -- General configuration -----------------------------------------------------
 
