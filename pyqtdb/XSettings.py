@@ -18,6 +18,10 @@ class XSettings(QSettings):
 	def __init__( self ):
 		QSettings.__init__( self )
 		
+		self.sanity_checks()
+		
+		
+	def sanity_checks(self)
 		## Sanity Checks
 		if not self.contains(self.SERVERS):
 			self.setValue(self.SERVERS, json.dumps({"servers":{}}))
