@@ -13,7 +13,9 @@
 
 import sys, os
 
-here_dir = os.path.dirname(os.path.abspath(__file__))
+os.environ['__GEN_DOCS__'] = "1"
+
+#here_dir = os.path.dirname(os.path.abspath(__file__))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
